@@ -29,6 +29,8 @@
 
       <label for="monthlyRate">نرخ بازده ماهانه (%)</label>
       <input type="number" id="monthlyRate" placeholder="مثال: 7" required />
+      <label for="months">تعداد ماه</label>
+      <input type="number" id="months" placeholder="مثال: 12" required />
 
       <button type="button" onclick="calculateInvestment()">محاسبه</button>
     </form>
@@ -57,6 +59,7 @@
         );
         const monthlyRate =
           parseFloat(document.getElementById("monthlyRate").value) / 100; // درصد به عدد
+        const months = parseFloat(document.getElementById("months").value); // درصد به عدد
 
         // بررسی ورودی‌ها
         if (
@@ -71,14 +74,14 @@
 
         // محاسبه سرمایه نهایی
         let capital = initialCapital;
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < months; i++) {
           capital = (capital + monthlyInjection) * (1 + monthlyRate);
         }
 
         // نمایش نتیجه
         document.getElementById(
           "result"
-        ).innerText = `سرمایه نهایی پس از ۱۲ ماه: ${formatNumber(
+        ).innerText = `سرمایه نهایی پس از ${months} ماه: ${formatNumber(
           capital.toFixed(2)
         )} تومان`;
       }
