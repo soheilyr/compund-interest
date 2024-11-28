@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>محاسبه سود مرکب</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <h1>محاسبه سرمایه</h1>
+    <form id="investmentForm">
+      <label for="initialCapital">سرمایه اولیه (تومان)</label>
+      <input
+        type="text"
+        id="initialCapital"
+        placeholder="مثال: 15,000,000"
+        oninput="formatInput(this)"
+        required
+      />
+
+      <label for="monthlyInjection">تزریق ماهانه (تومان)</label>
+      <input
+        type="text"
+        id="monthlyInjection"
+        placeholder="مثال: 15,000,000"
+        oninput="formatInput(this)"
+        required
+      />
+
+      <label for="monthlyRate">نرخ بازده ماهانه (%)</label>
+      <input type="number" id="monthlyRate" placeholder="مثال: 7" required />
+
+      <button type="button" onclick="calculateInvestment()">محاسبه</button>
+    </form>
+    <div class="result" id="result"></div>
+    <script>
+      // تابع فرمت‌دهی برای سه رقم سه رقم جدا کردن
+      function formatNumber(number) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+
+      // فرمت‌دهی ورودی هنگام تایپ
+      function formatInput(input) {
+        const value = input.value.replace(/,/g, ""); // حذف کاماها
+        if (!isNaN(value) && value !== "") {
+          input.value = formatNumber(value);
+        }
+      }
+
+      function calculateInvestment() {
+        // گرفتن مقادیر ورودی
+        const initialCapital = parseFloat(
+          document.getElementById("initialCapital").value.replace(/,/g, "")
+        );
+        const monthlyInjection = parseFloat(
+          document.getElementById("monthlyInjection").value.replace(/,/g, "")
+        );
+        const monthlyRate =
+          parseFloat(document.getElementById("monthlyRate").value) / 100; // درصد به عدد
+
+        // بررسی ورودی‌ها
+        if (
+          isNaN(initialCapital) ||
+          isNaN(monthlyInjection) ||
+          isNaN(monthlyRate)
+        ) {
+          document.getElementById("result").innerText =
+            "لطفاً همه فیلدها را به درستی پر کنید.";
+          return;
+        }
+
+        // محاسبه سرمایه نهایی
+        let capital = initialCapital;
+        for (let i = 0; i < 12; i++) {
+          capital = (capital + monthlyInjection) * (1 + monthlyRate);
+        }
+
+        // نمایش نتیجه
+        document.getElementById(
+          "result"
+        ).innerText = `سرمایه نهایی پس از ۱۲ ماه: ${formatNumber(
+          capital.toFixed(2)
+        )} تومان`;
+      }
+    </script>
+  </body>
+</html>
